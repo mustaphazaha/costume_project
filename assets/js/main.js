@@ -207,7 +207,7 @@ async function addToCartFromModal() {
         const data = await response.json();
 
         if (data.success) {
-            showNotification('Costume ajouté au panier !', 'success');
+            showNotification('Costume ajouté au panier avec succès !', 'success');
             fetchCart(); // Refresh cart
             closeModal();
         } else {
@@ -366,33 +366,39 @@ function filterByType(type) {
 // Mobile Menu
 function toggleMobileMenu() {
     const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
+    if (menu) {
+        menu.classList.toggle('hidden');
+    }
 }
 
 function toggleFilters() {
     const sidebar = document.getElementById('filter-sidebar');
-    sidebar.classList.toggle('hidden');
-    sidebar.classList.toggle('fixed');
-    sidebar.classList.toggle('inset-0');
-    sidebar.classList.toggle('z-50');
-    sidebar.classList.toggle('bg-cream');
-    sidebar.classList.toggle('p-6');
+    if (sidebar) {
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('fixed');
+        sidebar.classList.toggle('inset-0');
+        sidebar.classList.toggle('z-50');
+        sidebar.classList.toggle('bg-cream');
+        sidebar.classList.toggle('p-6');
+    }
 }
 
 // Scroll Effect & Parallax
 function setupScrollEffect() {
     // Parallax Hero
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        const windowHeight = window.innerHeight;
+    if (heroSection) {
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
 
-        // Move image up at half speed (Parallax)
-        if (scrollY <= windowHeight) {
-            heroSection.style.transform = `translateY(-${scrollY * 0.5}px)`;
-            // Optional: Fade out slightly
-            heroSection.style.opacity = Math.max(0, 1 - scrollY / (windowHeight * 1.2));
-        }
-    });
+            // Move image up at half speed (Parallax)
+            if (scrollY <= windowHeight) {
+                heroSection.style.transform = `translateY(-${scrollY * 0.5}px)`;
+                // Optional: Fade out slightly
+                heroSection.style.opacity = Math.max(0, 1 - scrollY / (windowHeight * 1.2));
+            }
+        });
+    }
 
     // Smooth Content Reveal
     const observerOptions = {
