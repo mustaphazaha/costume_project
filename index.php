@@ -47,7 +47,7 @@
     <?php include 'includes/navbar.php'; ?>
 
     <div id="hero-section" class="fixed inset-0 w-full h-screen z-0 flex items-center justify-center bg-dark transition-opacity duration-75">
-        <div class="absolute inset-0 bg-[url('images/hero.png')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 bg-[url('images/hero.png')] bg-cover"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-dark/40 via-transparent to-dark"></div>
         <div class="relative z-10 text-center px-4">
            <!-- Hero content if any -->
@@ -95,15 +95,15 @@
                             <div class="space-y-3">
                                 <label class="flex items-center cursor-pointer group">
                                     <input type="radio" name="type" value="" checked onchange="updateFilters()" class="mr-3 text-primary focus:ring-primary bg-transparent border-surface">
-                                    <span class="text-sm text-cream group-hover:text-primary transition">Tous</span>
+                                    <span class="text-sm text-light group-hover:text-primary transition">Tous</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
                                     <input type="radio" name="type" value="sale" onchange="updateFilters()" class="mr-3 text-primary focus:ring-primary bg-transparent border-surface">
-                                    <span class="text-sm text-cream group-hover:text-primary transition">Vente</span>
+                                    <span class="text-sm text-light group-hover:text-primary transition">Vente</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
                                     <input type="radio" name="type" value="rent" onchange="updateFilters()" class="mr-3 text-primary focus:ring-primary bg-transparent border-surface">
-                                    <span class="text-sm text-cream group-hover:text-primary transition">Location</span>
+                                    <span class="text-sm text-light group-hover:text-primary transition">Location</span>
                                 </label>
                             </div>
                         </div>

@@ -208,7 +208,7 @@ function setupFiltersUI() {
         catContainer.innerHTML = CATEGORIES.map(cat => `
             <label class="flex items-center cursor-pointer group">
                 <input type="radio" name="category" value="${cat.value}" ${filters.category === cat.value ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                <span class="text-sm text-charcoal/80 group-hover:text-sage transition">${cat.label}</span>
+                <span class="text-sm text-light group-hover:text-sage transition">${cat.label}</span>
             </label>
         `).join('');
     }
@@ -219,12 +219,12 @@ function setupFiltersUI() {
         sizeContainer.innerHTML = `
             <label class="flex items-center cursor-pointer group">
                 <input type="radio" name="size" value="" ${filters.size === '' ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                <span class="text-sm text-charcoal/80 group-hover:text-sage transition">Toutes</span>
+                <span class="text-sm text-light group-hover:text-sage transition">Toutes</span>
             </label>
             ${SIZES.map(size => `
                 <label class="flex items-center cursor-pointer group">
                     <input type="radio" name="size" value="${size}" ${filters.size === size ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                    <span class="text-sm text-charcoal/80 group-hover:text-sage transition">${size}</span>
+                    <span class="text-sm text-light group-hover:text-sage transition">${size}</span>
                 </label>
             `).join('')}
         `;
@@ -236,12 +236,12 @@ function setupFiltersUI() {
         colorContainer.innerHTML = `
             <label class="flex items-center cursor-pointer group">
                 <input type="radio" name="color" value="" ${filters.color === '' ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                <span class="text-sm text-charcoal/80 group-hover:text-sage transition">Toutes</span>
+                <span class="text-sm text-light group-hover:text-sage transition">Toutes</span>
             </label>
             ${COLORS.map(color => `
                 <label class="flex items-center cursor-pointer group">
                     <input type="radio" name="color" value="${color}" ${filters.color === color ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                    <span class="text-sm text-charcoal/80 group-hover:text-sage transition">${color}</span>
+                    <span class="text-sm light group-hover:text-sage transition">${color}</span>
                 </label>
             `).join('')}
         `;
