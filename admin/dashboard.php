@@ -85,10 +85,10 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </a>
             </div>
 
-            <div class="bg-surface/30 rounded-xl border border-surface overflow-hidden backdrop-blur-sm">
+            <div class="bg-dark/30 rounded-xl border border-surface overflow-hidden backdrop-blur-sm">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-white/10">
-                        <thead class="bg-surface/50">
+                        <thead class="bg-dark/50">
                             <tr>
                                 <th
                                     class="px-6 py-4 text-left text-xs font-bold text-secondary uppercase tracking-wider">
