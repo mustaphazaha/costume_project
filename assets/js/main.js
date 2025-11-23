@@ -207,19 +207,60 @@ async function addToCartFromModal() {
         const data = await response.json();
 
         if (data.success) {
-            alert('Costume ajouté au panier !');
+            showNotification('Costume ajouté au panier avec succès !', 'success');
             fetchCart(); // Refresh cart
             closeModal();
         } else {
             if (data.message === 'User not logged in') {
                 window.location.href = 'login.php';
             } else {
-                alert('Erreur: ' + data.message);
+                showNotification('Erreur: ' + data.message, 'error');
             }
         }
     } catch (error) {
         console.error('Error adding to cart:', error);
+        showNotification('Une erreur est survenue.', 'error');
     }
+}
+
+// Toast Notification System
+function showNotification(message, type = 'success') {
+    // Create container if it doesn't exist
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.className = 'fixed top-24 right-4 z-50 flex flex-col gap-2';
+        document.body.appendChild(container);
+    }
+
+    // Create notification element
+    const notification = document.createElement('div');
+    const bgColor = type === 'success' ? 'bg-primary' : 'bg-red-500';
+    const icon = type === 'success'
+        ? '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+        : '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+
+    notification.className = `${bgColor} text-white px-6 py-4 rounded-lg shadow-xl transform transition-all duration-500 translate-x-full flex items-center gap-3 min-w-[300px]`;
+    notification.innerHTML = `
+        ${icon}
+        <span class="font-medium">${message}</span>
+    `;
+
+    container.appendChild(notification);
+
+    // Animate in
+    requestAnimationFrame(() => {
+        notification.classList.remove('translate-x-full');
+    });
+
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => {
+            notification.remove();
+        }, 500);
+    }, 3000);
 }
 
 function updateCartUI() {
