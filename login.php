@@ -5,12 +5,12 @@ require_once 'includes/db.php';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    if (!empty($username) && !empty($password)) {
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->execute([$username]);
+    if (!empty($email) && !empty($password)) {
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <form method="POST" action="">
             <div class="mb-6">
-                <label for="username" class="block text-sm font-bold mb-2 text-charcoal/80">Nom d'utilisateur</label>
-                <input type="text" id="username" name="username" class="w-full px-4 py-3 rounded-lg bg-off-white border border-gray-200 focus:border-sage focus:ring-1 focus:ring-sage outline-none transition" required>
+                <label for="email" class="block text-sm font-bold mb-2 text-charcoal/80">Email</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-3 rounded-lg bg-off-white border border-gray-200 focus:border-sage focus:ring-1 focus:ring-sage outline-none transition" required>
             </div>
             
             <div class="mb-8">
@@ -90,8 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </button>
         </form>
 
-        <div class="mt-6 text-center text-sm text-charcoal/60">
-            <a href="index.php" class="hover:text-sage transition">Retour à l'accueil</a>
+        <div class="mt-6 text-center text-sm text-charcoal/60 space-y-2">
+            <a href="register.php" class="block hover:text-sage transition font-bold">Pas de compte ? S'inscrire</a>
+            <a href="index.php" class="block hover:text-sage transition">Retour à l'accueil</a>
         </div>
     </div>
 

@@ -18,13 +18,32 @@ try {
     // Create Users Table
     $sqlUsers = "CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(50) NOT NULL UNIQUE,
+        username VARCHAR(50) NOT NULL,
+        email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         role ENUM('user', 'admin') DEFAULT 'user',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($sqlUsers);
-    echo "Table 'users' created.<br>";
+    
+    // Check if email column exists
+    $stmt = $pdo->query("SHOW COLUMNS FROM users LIKE 'email'");
+    if ($stmt->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE users ADD COLUMN email VARCHAR(100) NOT NULL UNIQUE AFTER username");
+        echo "Column 'email' added to users table.<br>";
+    }
+
+    // Remove UNIQUE constraint from username if it exists
+    // This is a bit tricky in MySQL as we need the index name. Usually it's 'username'.
+    try {
+        $pdo->exec("ALTER TABLE users DROP INDEX username");
+        echo "Unique constraint on 'username' removed.<br>";
+    } catch (PDOException $e) {
+        // Index might not exist or have a different name. 
+        // If it fails, it's likely already removed or not there.
+    }
+
+    echo "Table 'users' schema updated.<br>";
 
     // Create Costumes Table
     $sqlCostumes = "CREATE TABLE IF NOT EXISTS costumes (
@@ -44,12 +63,26 @@ try {
     $pdo->exec($sqlCostumes);
     echo "Table 'costumes' created.<br>";
 
+    // Create Cart Items Table
+    $sqlCart = "CREATE TABLE IF NOT EXISTS cart_items (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        costume_id INT NOT NULL,
+        quantity INT DEFAULT 1,
+        size VARCHAR(10),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (costume_id) REFERENCES costumes(id) ON DELETE CASCADE
+    )";
+    $pdo->exec($sqlCart);
+    echo "Table 'cart_items' created.<br>";
+
     // Check if admin exists
     $stmt = $pdo->query("SELECT COUNT(*) FROM users WHERE username = 'admin'");
     if ($stmt->fetchColumn() == 0) {
         // Insert Admin User (password: admin123)
         $passwordHash = password_hash('admin123', PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare("INSERT INTO users (username, password, role) VALUES ('admin', ?, 'admin')");
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES ('admin', 'admin@example.com', ?, 'admin')");
         $stmt->execute([$passwordHash]);
         echo "Admin user created.<br>";
     }

@@ -31,24 +31,24 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
 
                 <!-- Cart -->
-                <a href="#" class="relative p-2 text-secondary hover:text-primary transition-colors">
+                <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="cart.php" class="relative p-2 text-secondary hover:text-primary transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                     <span id="cart-count" class="absolute top-0 right-0 bg-primary text-dark text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
                 </a>
+                <?php endif; ?>
 
                 <!-- Account -->
-                <div class="relative group">
+                <div class="flex">
                     <a href="<?php echo isset($_SESSION['user_id']) ? '#' : 'login.php'; ?>" class="p-2 text-secondary hover:text-primary transition-colors flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         <?php if (isset($_SESSION['username'])): ?>
-                            <span class="ml-2 text-sm hidden md:inline"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                            <span class="ml-2 text-sm hidden md:inline">Bienvenue, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
                         <?php endif; ?>
                     </a>
                     
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <div class="absolute right-0 mt-2 w-48 bg-surface rounded-md shadow-lg py-1 hidden group-hover:block z-50">
-                            <a href="logout.php" class="block px-4 py-2 text-sm text-cream hover:bg-dark">Déconnexion</a>
-                        </div>
+                            <a href="logout.php" class="p-2 text-secondary hover:text-primary transition-colors flex items-center">Déconnexion</a>
                     <?php endif; ?>
                 </div>
 

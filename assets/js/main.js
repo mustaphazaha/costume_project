@@ -47,10 +47,7 @@ let currentCostume = null;
 // Initialization
 document.addEventListener('DOMContentLoaded', () => {
     // Load Cart
-    const savedCart = localStorage.getItem('cart');
-    if (savedCart) {
-        cart = JSON.parse(savedCart);
-    }
+    fetchCart();
 
     fetchCostumes();
     setupFiltersUI();
@@ -181,22 +178,57 @@ function closeModal() {
 }
 
 // Cart Functions
-function addToCartFromModal() {
+async function fetchCart() {
+    try {
+        const response = await fetch('api/cart.php?action=get');
+        const data = await response.json();
+        if (data.success) {
+            cart = data.items;
+            updateCartUI();
+        }
+    } catch (error) {
+        console.error('Error fetching cart:', error);
+    }
+}
+
+async function addToCartFromModal() {
     if (!currentCostume) return;
 
-    cart.push(currentCostume);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartUI();
-    closeModal();
+    const formData = new FormData();
+    formData.append('action', 'add');
+    formData.append('costume_id', currentCostume.id);
+    formData.append('size', 'M'); // Default size for now, should be selected from UI
 
-    alert('Costume ajouté au panier !');
+    try {
+        const response = await fetch('api/cart.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.success) {
+            alert('Costume ajouté au panier !');
+            fetchCart(); // Refresh cart
+            closeModal();
+        } else {
+            if (data.message === 'User not logged in') {
+                window.location.href = 'login.php';
+            } else {
+                alert('Erreur: ' + data.message);
+            }
+        }
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+    }
 }
 
 function updateCartUI() {
     if (cartCountBadge) {
-        cartCountBadge.textContent = cart.length;
+        // Calculate total quantity
+        const totalQty = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartCountBadge.textContent = totalQty;
         cartCountBadge.classList.remove('hidden');
-        if (cart.length === 0) cartCountBadge.classList.add('hidden');
+        if (totalQty === 0) cartCountBadge.classList.add('hidden');
     }
 }
 
