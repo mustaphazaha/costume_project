@@ -148,9 +148,9 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="edit_costume.php?id=<?php echo $costume['id']; ?>"
                                             class="text-secondary hover:text-primary mr-4 transition-colors">Modifier</a>
-                                        <a href="delete_costume.php?id=<?php echo $costume['id']; ?>"
+                                        <a href="#"
                                             class="text-red-400 hover:text-red-300 transition-colors"
-                                            onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce costume ?');">Supprimer</a>
+                                            onclick="confirmDelete(event, <?php echo $costume['id']; ?>)">Supprimer</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -160,6 +160,85 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </main>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div id="delete-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center">
+                <div id="delete-panel"
+                    class="relative transform overflow-hidden rounded-2xl bg-surface text-left shadow-2xl transition-all opacity-0 translate-y-4 scale-95 sm:w-full sm:max-w-lg border border-primary/20">
+                    <div class="bg-surface px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-900/20 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-xl font-serif font-bold leading-6 text-primary" id="modal-title">Supprimer
+                                    le costume</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-300">Êtes-vous sûr de vouloir supprimer ce costume ? Cette
+                                        action est irréversible.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-white/5">
+                        <button type="button" id="confirm-delete-btn"
+                            class="inline-flex w-full justify-center rounded-xl bg-red-600 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto transition-colors">Supprimer</button>
+                        <button type="button" onclick="closeDeleteModal()"
+                            class="mt-3 inline-flex w-full justify-center rounded-xl bg-white/10 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-white/20 sm:mt-0 sm:w-auto transition-colors">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let deleteUrl = '';
+
+        function confirmDelete(event, id) {
+            event.preventDefault();
+            deleteUrl = 'delete_costume.php?id=' + id;
+
+            const modal = document.getElementById('delete-modal');
+            const backdrop = document.getElementById('delete-backdrop');
+            const panel = document.getElementById('delete-panel');
+            const confirmBtn = document.getElementById('confirm-delete-btn');
+
+            confirmBtn.onclick = function() {
+                window.location.href = deleteUrl;
+            };
+
+            if (modal && backdrop && panel) {
+                modal.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    panel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+                });
+            }
+        }
+
+        function closeDeleteModal() {
+            const modal = document.getElementById('delete-modal');
+            const backdrop = document.getElementById('delete-backdrop');
+            const panel = document.getElementById('delete-panel');
+
+            if (backdrop && panel) {
+                backdrop.classList.add('opacity-0');
+                panel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+                setTimeout(() => {
+                    if (modal) modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+    </script>
 
 </body>
 
