@@ -28,18 +28,6 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <!-- Right Side Icons -->
             <div class="flex items-center space-x-4">
-                <!-- Search -->
-                <div class="hidden md:flex items-center bg-surface rounded-full px-4 py-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-secondary mr-2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Rechercher"
-                        class="bg-transparent border-none outline-none text-cream text-sm w-32 placeholder-secondary/50">
-                </div>
-
                 <!-- Cart -->
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="cart.php" class="relative p-2 text-secondary hover:text-primary transition-colors">
@@ -55,23 +43,31 @@ if (session_status() === PHP_SESSION_NONE) {
                 <?php endif; ?>
 
                 <!-- Account -->
-                <div class="flex">
-                    <a href="<?php echo isset($_SESSION['user_id']) ? '#' : 'login.php'; ?>"
-                        class="p-2 text-secondary hover:text-primary transition-colors flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                        <?php if (isset($_SESSION['username'])): ?>
+                <div class="flex items-center">
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="#" class="p-2 text-secondary hover:text-primary transition-colors flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
                             <span class="ml-2 text-sm hidden md:inline">Bienvenue,
                                 <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                        <?php endif; ?>
-                    </a>
-
-                    <?php if (isset($_SESSION['user_id'])): ?>
+                        </a>
                         <a href="#" onclick="confirmLogout(event)"
-                            class="p-2 text-secondary hover:text-primary transition-colors flex items-center">Déconnexion</a>
+                            class="ml-2 p-2 text-secondary hover:text-primary transition-colors flex items-center">Déconnexion</a>
+                    <?php else: ?>
+                            
+                        <a href="login.php" class="text-sm font-medium text-secondary hover:text-primary transition-colors flex">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                class="text-secondary hover:text-primary transition-colors flex items-center mr-1"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg> 
+                        Connexion
+                        </a>
+                        <a href="register.php" class="ml-5 text-sm font-medium text-secondary hover:text-primary transition-colors">S'inscrire</a>
                     <?php endif; ?>
                 </div>
 

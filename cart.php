@@ -64,7 +64,7 @@ foreach ($cart_items as $item) {
     <?php include 'includes/navbar.php'; ?>
 
     <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
-        <h1 class="text-4xl font-serif font-bold text-primary mb-8">Mon Panier</h1>
+        <h1 class="text-4xl font-serif font-bold text-primary mb-8 mt-5">Mon Panier</h1>
 
         <?php if (empty($cart_items)): ?>
             <div class="text-center py-16 bg-surface/30 rounded-xl border border-surface">
