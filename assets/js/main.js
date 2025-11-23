@@ -241,7 +241,7 @@ function setupFiltersUI() {
             ${COLORS.map(color => `
                 <label class="flex items-center cursor-pointer group">
                     <input type="radio" name="color" value="${color}" ${filters.color === color ? 'checked' : ''} onchange="updateFilters()" class="mr-3 text-charcoal focus:ring-sage">
-                    <span class="text-sm light group-hover:text-sage transition">${color}</span>
+                    <span class="text-sm text-light group-hover:text-sage transition">${color}</span>
                 </label>
             `).join('')}
         `;
