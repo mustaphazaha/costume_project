@@ -62,7 +62,7 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="flex items-center gap-4">
                         <span class="text-sm text-gray-300">Bonjour, <span
                                 class="text-white font-bold"><?php echo htmlspecialchars($_SESSION['username']); ?></span></span>
-                        <a href="../logout.php"
+                        <a href="#" onclick="confirmLogout(event)"
                             class="bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-600/30 px-4 py-2 rounded-lg text-sm transition-all">Déconnexion</a>
                     </div>
                 </div>
@@ -124,11 +124,13 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-bold text-cream">
-                                            <?php echo htmlspecialchars($costume['name']); ?></div>
+                                            <?php echo htmlspecialchars($costume['name']); ?>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-400">
-                                            <?php echo htmlspecialchars($costume['category']); ?></div>
+                                            <?php echo htmlspecialchars($costume['category']); ?>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span
@@ -148,8 +150,7 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="edit_costume.php?id=<?php echo $costume['id']; ?>"
                                             class="text-secondary hover:text-primary mr-4 transition-colors">Modifier</a>
-                                        <a href="#"
-                                            class="text-red-400 hover:text-red-300 transition-colors"
+                                        <a href="#" class="text-red-400 hover:text-red-300 transition-colors"
                                             onclick="confirmDelete(event, <?php echo $costume['id']; ?>)">Supprimer</a>
                                     </td>
                                 </tr>
@@ -159,6 +160,45 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-modal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div id="logout-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity opacity-0"></div>
+
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-center justify-center p-4 text-center">
+                <div id="logout-panel"
+                    class="relative transform overflow-hidden rounded-2xl bg-surface text-left shadow-2xl transition-all opacity-0 translate-y-4 scale-95 sm:w-full sm:max-w-lg border border-primary/20">
+                    <div class="bg-surface px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-primary/20 sm:mx-0 sm:h-10 sm:w-10">
+                                <svg class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                                </svg>
+                            </div>
+                            <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                <h3 class="text-xl font-serif font-bold leading-6 text-primary" id="modal-title">
+                                    Déconnexion</h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-300">Êtes-vous sûr de vouloir vous déconnecter ?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark/50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 border-t border-white/5">
+                        <button type="button" onclick="window.location.href='../logout.php'"
+                            class="inline-flex w-full justify-center rounded-xl bg-red-600 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto transition-colors">Oui,
+                            me déconnecter</button>
+                        <button type="button" onclick="closeLogoutModal()"
+                            class="mt-3 inline-flex w-full justify-center rounded-xl bg-white/10 px-3 py-2 text-sm font-bold text-white shadow-sm hover:bg-white/20 sm:mt-0 sm:w-auto transition-colors">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
@@ -180,10 +220,12 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 </svg>
                             </div>
                             <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                <h3 class="text-xl font-serif font-bold leading-6 text-primary" id="modal-title">Supprimer
+                                <h3 class="text-xl font-serif font-bold leading-6 text-primary" id="modal-title">
+                                    Supprimer
                                     le costume</h3>
                                 <div class="mt-2">
-                                    <p class="text-sm text-gray-300">Êtes-vous sûr de vouloir supprimer ce costume ? Cette
+                                    <p class="text-sm text-gray-300">Êtes-vous sûr de vouloir supprimer ce costume ?
+                                        Cette
                                         action est irréversible.</p>
                                 </div>
                             </div>
@@ -201,6 +243,37 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script>
+        // Logout Modal Functions
+        function confirmLogout(event) {
+            event.preventDefault();
+            const modal = document.getElementById('logout-modal');
+            const backdrop = document.getElementById('logout-backdrop');
+            const panel = document.getElementById('logout-panel');
+
+            if (modal && backdrop && panel) {
+                modal.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    backdrop.classList.remove('opacity-0');
+                    panel.classList.remove('opacity-0', 'translate-y-4', 'scale-95');
+                });
+            }
+        }
+
+        function closeLogoutModal() {
+            const modal = document.getElementById('logout-modal');
+            const backdrop = document.getElementById('logout-backdrop');
+            const panel = document.getElementById('logout-panel');
+
+            if (backdrop && panel) {
+                backdrop.classList.add('opacity-0');
+                panel.classList.add('opacity-0', 'translate-y-4', 'scale-95');
+                setTimeout(() => {
+                    if (modal) modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // Delete Modal Functions
         let deleteUrl = '';
 
         function confirmDelete(event, id) {
@@ -212,7 +285,7 @@ $costumes = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const panel = document.getElementById('delete-panel');
             const confirmBtn = document.getElementById('confirm-delete-btn');
 
-            confirmBtn.onclick = function() {
+            confirmBtn.onclick = function () {
                 window.location.href = deleteUrl;
             };
 
